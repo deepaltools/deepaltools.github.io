@@ -52,7 +52,7 @@
 
   main {
     width: 100%;
-    max-width: 920px;
+    max-width: 802px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -82,6 +82,9 @@
     100% { opacity: 1; transform: scale(1); }
   }
 
+  /* Фон картинки значка заходит под заголовок; текст — поверх него, иначе ложится тенью. */
+  h1, .lede, .choices { position: relative; z-index: 1; }
+
   h1 {
     font-family: "Unbounded", "Inter", sans-serif;
     font-weight: 700;
@@ -99,8 +102,11 @@
     color: var(--mist);
   }
 
+  /* Ширина плитки = две кнопки Tribute (335) + поле 28 слева и справа = 391;
+     две плитки и зазор 20 — 802. Колонки 1fr 1fr: Boosty ровно такой же ширины. */
   .choices {
-    width: 100%;
+    width: 802px;
+    max-width: 100%;
     margin-top: clamp(20px, 4vh, 40px);
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -225,10 +231,10 @@
   @media (max-width: 600px) {
         h1 { font-size: 28px; }
     .lede { font-size: 16px; }
-    .choices { grid-template-columns: 1fr; gap: 12px; margin-top: 22px; }
+    .choices { width: 100%; grid-template-columns: 1fr; gap: 12px; margin-top: 22px; }
     .lede { margin-top: 12px; }
     .pay { min-height: 0; padding: 20px; gap: 14px; flex-direction: row; flex-wrap: wrap; align-items: flex-start; }
-    .pay .text { flex: 1 1 0; min-width: 0; }
+    .pay .text { flex: 1 1 0; }
     .text { gap: 4px; }
     .go { flex-basis: 100%; justify-content: center; margin-top: 4px; }
     .gos { flex-basis: 100%; margin-top: 4px; }
