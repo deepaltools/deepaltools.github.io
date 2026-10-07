@@ -2,11 +2,299 @@
 <html lang="ru">
 <head>
 <meta charset="utf-8">
-<title>Deepal Tools</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta http-equiv="refresh" content="0; url=../">
-<link rel="canonical" href="https://deepaltools.github.io/">
-<style>body{background:#021458;color:#F3F7FF;font-family:system-ui,sans-serif;display:grid;place-items:center;min-height:100vh;margin:0}a{color:#F3F7FF}</style>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Поддержать Deepal Tools</title>
+<meta name="description" content="Приложения Deepal Tools бесплатные. Поддержать проект можно через Tribute или Boosty.">
+<meta name="theme-color" content="#021458">
+<meta property="og:title" content="Поддержать Deepal Tools">
+<meta property="og:description" content="Tribute или Boosty — как вам удобнее.">
+<meta property="og:image" content="https://deepaltools.github.io/assets/deepal-tools.png">
+<link rel="icon" href="../assets/deepal-tools.png">
+<link rel="apple-touch-icon" href="../assets/deepal-tools.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Unbounded:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    /* Цвета взяты со значка Deepal Tools: его фон и свечение контура. */
+    --navy: #021458;
+    --navy-deep: #010C38;
+    --glow: #00E5FF;
+    --white: #F3F7FF;
+    --mist: #A9B8E8;
+    /* Фирменные цвета сервисов — с их собственных значков. */
+    --tribute: #3399FF;
+    --tribute-deep: #1E7FE6;
+    --boosty: #F15F2C;
+    --boosty-deep: #D94A1A;
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body { margin: 0; }
+
+  body {
+    min-height: 100vh;
+    min-height: 100dvh;
+    background:
+      radial-gradient(120% 70% at 50% 0%, var(--navy) 0%, var(--navy) 45%, var(--navy-deep) 100%);
+    background-color: var(--navy-deep);
+    color: var(--white);
+    font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* Содержимое — по центру экрана, подпись снизу тянет его чуть выше середины. */
+    justify-content: center;
+    padding: max(20px, env(safe-area-inset-top)) 20px max(24px, env(safe-area-inset-bottom));
+  }
+
+  main {
+    width: 100%;
+    max-width: 802px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  /* Значок целиком, без обрезки: квадратный тёмно-синий фон картинки совпадает с фоном
+     страницы, а края мягко гаснут, чтобы на любом экране не проступил шов. */
+  /* Размер значка зависит и от ширины, и от высоты окна, чтобы на низком экране
+     плитки с кнопками помещались целиком. height: auto обязателен — иначе атрибут
+     height у картинки задаёт высоту отдельно от ширины и значок сплющивается.
+     Отрицательные поля съедают пустой фон вокруг треугольника. */
+  .mark {
+    --s: clamp(150px, min(52vw, 34vh), 280px);
+    width: var(--s);
+    height: auto;
+    aspect-ratio: 1 / 1;
+    margin: calc(var(--s) * -0.2) 0 calc(var(--s) * -0.14);
+    display: block;
+    -webkit-mask-image: radial-gradient(circle at 50% 50%, #000 52%, transparent 71%);
+            mask-image: radial-gradient(circle at 50% 50%, #000 52%, transparent 71%);
+    animation: wake 1.6s cubic-bezier(.2,.7,.2,1) both;
+  }
+
+  @keyframes wake {
+    0%   { opacity: 0; transform: scale(.94); }
+    100% { opacity: 1; transform: scale(1); }
+  }
+
+  /* Фон картинки значка заходит под заголовок; текст — поверх него, иначе ложится тенью. */
+  h1, .lede, .choices { position: relative; z-index: 1; }
+
+  h1 {
+    font-family: "Unbounded", "Inter", sans-serif;
+    font-weight: 700;
+    font-size: clamp(28px, min(7.4vw, 6vh), 52px);
+    line-height: 1.08;
+    letter-spacing: -0.01em;
+    margin: 4px 0 0;
+  }
+
+  .lede {
+    margin: 16px 0 0;
+    max-width: 30em;
+    font-size: clamp(17px, 4.2vw, 19px);
+    line-height: 1.55;
+    color: var(--mist);
+  }
+
+  /* Ширина плитки = две кнопки Tribute (335) + поле 28 слева и справа = 391;
+     две плитки и зазор 20 — 802. Колонки 1fr 1fr: Boosty ровно такой же ширины. */
+  .choices {
+    width: 802px;
+    max-width: 100%;
+    margin-top: clamp(20px, 4vh, 40px);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+
+  .pay {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+    gap: 18px;
+    padding: 28px;
+    border-radius: 28px;
+    color: #fff;
+    text-decoration: none;
+    min-height: min(220px, 26vh);
+    overflow: hidden;
+    transition: transform .18s ease, box-shadow .18s ease;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .pay:active { transform: scale(.98); }
+
+  .pay:focus-visible {
+    outline: 3px solid var(--glow);
+    outline-offset: 4px;
+  }
+
+  .pay.tribute {
+    background: linear-gradient(160deg, var(--tribute) 0%, var(--tribute-deep) 100%);
+    box-shadow: 0 18px 40px -18px rgba(51, 153, 255, .75);
+  }
+
+  .pay.boosty {
+    background: linear-gradient(160deg, var(--boosty) 0%, var(--boosty-deep) 100%);
+    box-shadow: 0 18px 40px -18px rgba(241, 95, 44, .75);
+  }
+
+  @media (hover: hover) {
+    .pay:hover { transform: translateY(-3px); }
+  }
+
+  .badge {
+    width: 64px;
+    height: 64px;
+    border-radius: 18px;
+    background: #fff;
+    display: grid;
+    place-items: center;
+    flex: none;
+  }
+
+  .badge img { width: 46px; height: 46px; display: block; }
+  .badge svg { width: 38px; height: 38px; display: block; }
+
+  .name {
+    font-family: "Inter", sans-serif;
+    font-weight: 700;
+    font-size: 30px;
+    line-height: 1;
+    letter-spacing: -0.02em;
+  }
+
+  .text { display: flex; flex-direction: column; gap: 8px; }
+
+  .how {
+    font-size: 16px;
+    line-height: 1.45;
+    color: rgba(255, 255, 255, .88);
+    max-width: 22em;
+  }
+
+  .go {
+    margin-top: auto;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 18px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, .18);
+    font-weight: 600;
+    font-size: 16px;
+  }
+
+  .go svg { width: 18px; height: 18px; }
+
+  a.go { color: #fff; text-decoration: none; transition: background .18s ease; }
+  a.go:focus-visible { outline: 3px solid var(--glow); outline-offset: 3px; }
+  .gos .go { background: rgba(255, 255, 255, .24); }
+  .gos .go.ghost { background: transparent; box-shadow: inset 0 0 0 2px rgba(255, 255, 255, .55); }
+  @media (hover: hover) {
+    a.go:hover { background: rgba(255, 255, 255, .34); }
+  }
+
+  /* Две кнопки Tribute — рядом, а на телефоне друг под другом во всю ширину. */
+  .gos {
+    margin-top: auto;
+    display: flex;
+    gap: 10px;
+  }
+  .gos .go { margin-top: 0; white-space: nowrap; }
+
+  /* Плитка Tribute нажимается целиком, как Boosty, и ведёт в Telegram: невидимый слой
+     ссылки «Открыть в Telegram» растянут на всю плитку. Веб-версия лежит выше этого слоя
+     и открывается только своей кнопкой. */
+  .pay.tribute { cursor: pointer; }
+  .go.main::after { content: ""; position: absolute; inset: 0; border-radius: 28px; }
+  .pay.tribute .go.main { position: static; }
+  .go.ghost { position: relative; z-index: 1; }
+  .pay.tribute:active:not(:has(.go.ghost:active)) { transform: scale(.98); }
+
+  footer {
+    padding-top: clamp(20px, 4vh, 44px);
+    text-align: center;
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--mist);
+  }
+
+  footer a {
+    color: var(--white);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(243, 247, 255, .35);
+  }
+
+  footer a:focus-visible { outline: 2px solid var(--glow); outline-offset: 3px; border-radius: 4px; }
+
+  @media (max-width: 600px) {
+        h1 { font-size: 28px; }
+    .lede { font-size: 16px; }
+    .choices { width: 100%; grid-template-columns: 1fr; gap: 12px; margin-top: 22px; }
+    .lede { margin-top: 12px; }
+    .pay { min-height: 0; padding: 20px; gap: 14px; flex-direction: row; flex-wrap: wrap; align-items: flex-start; }
+    .pay .text { flex: 1 1 0; }
+    .text { gap: 4px; }
+    .go { flex-basis: 100%; justify-content: center; margin-top: 4px; }
+    .gos { flex-basis: 100%; margin-top: 4px; }
+    .gos { flex-direction: column; }
+    .name { font-size: 26px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .mark { animation: none; }
+    .pay { transition: none; }
+  }
+</style>
 </head>
-<body><a href="../">Deepal Tools</a></body>
+<body>
+<main>
+  <img class="mark" src="../assets/deepal-tools.png" alt="Deepal Tools" width="300" height="300">
+
+  <h1>Поддержать Deepal&nbsp;Tools</h1>
+  <p class="lede">Все приложения бесплатные. Если они вам пригодились, выберите, как поддержать проект.</p>
+
+  <div class="choices">
+    <!-- У Tribute два входа: мини-приложение в Telegram и веб-версия в браузере. -->
+    <div class="pay tribute">
+      <span class="badge"><img src="../assets/tribute.png" alt="" width="46" height="46"></span>
+      <span class="text">
+        <span class="name">Tribute</span>
+        <span class="how">В Telegram или в браузере</span>
+      </span>
+      <span class="gos">
+        <a class="go main" href="https://t.me/tribute/app?startapp=dPI5" rel="noopener">Открыть в Telegram</a>
+        <a class="go ghost" href="https://web.tribute.tg/d/PI5" rel="noopener">Веб-версия</a>
+      </span>
+    </div>
+
+    <a class="pay boosty" href="https://boosty.to/deepaltools/donate" rel="noopener">
+      <span class="badge">
+        <!-- Знак Boosty — фирменный, из Simple Icons (источник: boosty.to/app/brand). -->
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#F15F2C" d="M2.661 14.337 6.801 0h6.362L11.88 4.444l-.038.077-3.378 11.733h3.15c-1.321 3.289-2.35 5.867-3.086 7.733-5.816-.063-7.442-4.228-6.02-9.155M8.554 24l7.67-11.035h-3.25l2.83-7.073c4.852.508 7.137 4.33 5.791 8.952C20.16 19.81 14.344 24 8.68 24h-.127z"/></svg>
+      </span>
+      <span class="text">
+        <span class="name">Boosty</span>
+        <span class="how">Картой, если Tribute не открывается</span>
+      </span>
+      <span class="go">Поддержать через Boosty
+      </span>
+    </a>
+  </div>
+</main>
+
+<footer>
+  Спасибо, что вы с нами.<br>
+  Новости и обновления — в канале <a href="https://t.me/deepal_tools">@deepal_tools</a>
+</footer>
+</body>
 </html>
