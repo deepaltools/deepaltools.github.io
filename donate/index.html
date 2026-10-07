@@ -201,7 +201,6 @@
   .gos .go.ghost { background: transparent; box-shadow: inset 0 0 0 2px rgba(255, 255, 255, .55); }
   @media (hover: hover) {
     a.go:hover { background: rgba(255, 255, 255, .34); }
-    div.pay:hover { transform: none; }
   }
 
   /* Две кнопки Tribute — рядом, а на телефоне друг под другом во всю ширину. */
@@ -211,6 +210,15 @@
     gap: 10px;
   }
   .gos .go { margin-top: 0; white-space: nowrap; }
+
+  /* Плитка Tribute нажимается целиком, как Boosty, и ведёт в Telegram: невидимый слой
+     ссылки «Открыть в Telegram» растянут на всю плитку. Веб-версия лежит выше этого слоя
+     и открывается только своей кнопкой. */
+  .pay.tribute { cursor: pointer; }
+  .go.main::after { content: ""; position: absolute; inset: 0; border-radius: 28px; }
+  .pay.tribute .go.main { position: static; }
+  .go.ghost { position: relative; z-index: 1; }
+  .pay.tribute:active:not(:has(.go.ghost:active)) { transform: scale(.98); }
 
   footer {
     padding-top: clamp(20px, 4vh, 44px);
@@ -264,7 +272,7 @@
         <span class="how">В Telegram или в браузере</span>
       </span>
       <span class="gos">
-        <a class="go" href="https://t.me/tribute/app?startapp=dPI5" rel="noopener">Открыть в Telegram</a>
+        <a class="go main" href="https://t.me/tribute/app?startapp=dPI5" rel="noopener">Открыть в Telegram</a>
         <a class="go ghost" href="https://web.tribute.tg/d/PI5" rel="noopener">Веб-версия</a>
       </span>
     </div>
