@@ -1,5 +1,6 @@
 # deepaltools.github.io
 
-Страницы Deepal Tools на GitHub Pages.
+Страница Deepal Tools на GitHub Pages: канал с новостями и поддержка проекта через Tribute или Boosty.
 
-- [Поддержать проект](https://deepaltools.github.io/donate/) — Tribute или Boosty.
+- [deepaltools.github.io](https://deepaltools.github.io/)
+- Старый адрес `/donate/` перекидывает на главную.
