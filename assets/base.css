@@ -1,0 +1,293 @@
+/* deepaltools.com — общая основа сайта, личного кабинета, админки и mini-app.
+   Те же цвета, карточки, плашки иконок и переключатели, что в Deepal Cockpit на экране машины (ui/CarTheme.kt).
+   Только токены, база и общие компоненты; витрина сайта — в site.css, кабинет и админка — в server/app/static/app.css.
+   Цвета задаются ТОЛЬКО здесь, в :root (build.py падает, если #hex встретится ниже). */
+:root {
+  --bg: #06080B;
+  --surface: #11151C;
+  --surface-hi: #161C25;
+  --raised: #19202A;
+  --raised-hi: #222B37;
+  --glass: #0A0E13;
+  --line: rgba(255, 255, 255, .08);
+  --ink: #F2F5F8;
+  --sub: #9BA7B6;
+  --idle: #5B6B7F;
+  --grey: #8C97A6;
+  --white: #FFFFFF;
+  --blue: #4FA3FF;
+  --blue-hi: #6BB3FF;
+  --on-blue: #04121F;
+  --teal: #19C79C;
+  --orange: #F5A524;
+  --purple: #A35BEF;
+  --green: #4ADE80;
+  --gold: #E8B43C;
+  --warm: #E0794F;
+  --warm-ink: #F2A27F;
+  --red: #EF5350;
+  --switch-off: #2A333F;
+  --knob: #E8EDF3;
+  --r-l: 22px;
+  --r-m: 16px;
+  --r-s: 11px;
+  --font: "Roboto", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --measure: 38rem;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html { scrollbar-gutter: stable; -webkit-text-size-adjust: 100%; scroll-behavior: smooth; scroll-padding-top: 5.5rem; interpolate-size: allow-keywords; }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 400 1.0625rem/1.55 var(--font); -webkit-font-smoothing: antialiased; }
+img { max-width: 100%; height: auto; display: block; }
+a { color: var(--blue); text-decoration: none; }
+/* без задержки двойного касания на телефоне */
+a, button, summary, .switch { touch-action: manipulation; }
+a:hover { text-decoration: underline; text-underline-offset: 3px; }
+:focus-visible { outline: 2px solid var(--blue); outline-offset: 3px; }
+/* у ссылок в тексте рамка фокуса скруглена; у кнопок и карточек она повторяет их собственные углы */
+a:not([class]):focus-visible, summary:focus-visible { border-radius: 8px; }
+.skip { position: absolute; left: -999px; top: .5rem; background: var(--blue); color: var(--bg); padding: .5rem 1rem; border-radius: 10px; z-index: 50; }
+.skip:focus { left: 1rem; }
+.vh { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+
+.wrap { max-width: 82rem; margin: 0 auto; padding: 0 1.5rem; }
+
+/* иконки — Material Symbols Rounded, как в приложении */
+.ms { font-family: "Material Symbols Rounded"; font-weight: normal; font-style: normal; font-size: 1.4rem; line-height: 1;
+  display: inline-block; letter-spacing: normal; text-transform: none; white-space: nowrap; direction: ltr;
+  font-variation-settings: "FILL" 1, "wght" 500, "GRAD" 0, "opsz" 24; -webkit-font-smoothing: antialiased; }
+/* Значок вместо глифа шрифта (разделение экрана — штатный из прошивки): размер как у .ms, цвет текста */
+.ms.glyph { width: 1em; height: 1em; fill: currentColor; }
+/* звезда Telegram — золотая иконка вместо эмодзи */
+.ms.star { color: var(--gold); font-size: 1.05em; vertical-align: -.14em; }
+/* плашка иконки: тонированная, у активной — залитая (как пункты меню слева в Cockpit) */
+.ico { --c: var(--blue); flex: none; width: 2.6rem; height: 2.6rem; border-radius: var(--r-s); display: grid; place-items: center;
+  background: color-mix(in srgb, var(--c) 17%, transparent); color: var(--c); }
+.ico.on { background: var(--c); color: var(--white); }
+/* на светлых плашках белый значок не читается — тёмный */
+.ico.on.green, .ico.on.orange, .ico.on.gold { color: var(--on-blue); }
+.ico.teal { --c: var(--teal); } .ico.orange { --c: var(--orange); } .ico.purple { --c: var(--purple); }
+.ico.green { --c: var(--green); } .ico.gold { --c: var(--gold); } .ico.red { --c: var(--red); } .ico.grey { --c: var(--grey); }
+
+/* типографика: как в Cockpit — плотный жирный Roboto без украшений */
+h1, h2, h3 { margin: 0; font-weight: 700; letter-spacing: -.01em; text-wrap: balance; overflow-wrap: break-word; }
+h1 { font-size: clamp(2.2rem, 4.4vw, 3.4rem); line-height: 1.08; }
+h2 { font-size: clamp(1.55rem, 2.6vw, 2.1rem); line-height: 1.15; margin-bottom: .8rem; }
+h3 { font-size: 1.12rem; line-height: 1.3; font-weight: 600; }
+p { margin: 0 0 1rem; max-width: var(--measure); }
+.lead { font-size: 1.2rem; color: var(--sub); }
+.sub, small { color: var(--sub); }
+.small { color: var(--sub); font-size: .92rem; }
+strong { font-weight: 600; }
+
+/* кнопки: тонированные синие как «Открыть настройки», главная — залитая */
+/* высоту держит min-height; длинная надпись на телефоне переносится по центру, а не сжимается в строку */
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: .5rem; min-height: 3rem; padding: .5rem 1.35rem;
+  border-radius: var(--r-m); border: 0; font: 600 1rem/1.2 var(--font); text-align: center; cursor: pointer; text-decoration: none !important;
+  background: color-mix(in srgb, var(--blue) 16%, transparent); color: var(--blue);
+  transition: background-color .15s, transform .1s; }
+.btn:hover { background: color-mix(in srgb, var(--blue) 24%, transparent); }
+.btn:active { transform: scale(.98); }
+.btn.primary { background: var(--blue); color: var(--on-blue); }
+.btn.primary:hover { background: var(--blue-hi); }
+.btn.quiet { background: var(--raised); color: var(--ink); }
+.btn.quiet:hover { background: var(--raised-hi); }
+/* опасное действие: «Отозвать», «Вернуть деньги» — красная тонировка */
+.btn.danger { background: color-mix(in srgb, var(--red) 15%, transparent); color: color-mix(in srgb, var(--red) 70%, var(--ink)); }
+.btn.danger:hover { background: color-mix(in srgb, var(--red) 24%, transparent); }
+.btn:disabled, .btn[aria-disabled="true"] { opacity: .45; cursor: not-allowed; transform: none; }
+.btn .ms { font-size: 1.25rem; }
+/* крупные — главные действия: «Купить код», «Как установить» */
+.btn.lg { min-height: 3.75rem; padding: .6rem 2rem; font-size: 1.125rem; border-radius: var(--r-l); }
+/* компактные — в таблицах и строках; палец всё равно попадает (44 px) */
+.btn.sm { min-height: 2.75rem; padding: .4rem 1rem; font-size: .93rem; border-radius: var(--r-s); }
+.btn.sm .ms { font-size: 1.15rem; }
+.actions { display: flex; flex-wrap: wrap; gap: .7rem; margin-top: 1.8rem; }
+
+/* метки-чипы как «Не разрешено» / «Проверка» */
+.chip, .tag { display: inline-flex; align-items: center; gap: .35rem; padding: .22rem .7rem; border-radius: 999px; font-size: .85rem;
+  font-weight: 600; background: var(--raised); color: var(--sub); white-space: nowrap; vertical-align: middle; }
+.tag .ms, .chip .ms { font-size: 1rem; }
+.tag.free, .chip.free, .tag.ok, .chip.ok { background: color-mix(in srgb, var(--green) 14%, transparent); color: var(--green); }
+.tag.paid, .chip.paid { background: color-mix(in srgb, var(--blue) 16%, transparent); color: var(--blue); }
+.tag.ya { background: color-mix(in srgb, var(--gold) 15%, transparent); color: var(--gold); }
+.tag.wait, .chip.wait { background: color-mix(in srgb, var(--orange) 15%, transparent); color: var(--orange); }
+.tag.stop, .chip.stop { background: color-mix(in srgb, var(--red) 15%, transparent); color: color-mix(in srgb, var(--red) 70%, var(--ink)); }
+
+/* шапка */
+.top { position: sticky; top: 0; z-index: 20; background: color-mix(in srgb, var(--bg) 86%, transparent);
+  backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border-bottom: 1px solid var(--line); }
+.top .wrap { display: flex; align-items: center; gap: 1.6rem; min-height: 4.25rem; }
+.brand { display: flex; white-space: nowrap; align-items: center; gap: .7rem; color: var(--ink); font-weight: 700; font-size: 1.05rem; text-decoration: none !important; }
+.brand img { width: 36px; height: 36px; border-radius: 10px; }
+.brand { flex-shrink: 0; }   /* не сжимать: иначе подпись обрезалась до «Deepal Tool» */
+/* меню стоит сразу за логотипом и не зависит от правой части: «Кабинет»/имя, «Купить»/«Выйти» разной ширины
+   больше не сдвигают его при переходах между сайтом и кабинетом */
+.top nav { display: flex; gap: .3rem; }
+.top .top-end { display: flex; align-items: center; gap: .5rem; margin-left: auto; }
+.top nav a { color: var(--sub); padding: .5rem .85rem; border-radius: var(--r-s); font-weight: 500; text-decoration: none; white-space: nowrap; }
+.top nav a:hover { color: var(--ink); background: var(--surface); }
+.top nav a[aria-current] { color: var(--ink); background: var(--surface); }
+.top .account { display: inline-flex; align-items: center; gap: .4rem; min-height: 2.6rem; padding: 0 1rem; white-space: nowrap; border-radius: var(--r-m);
+  background: color-mix(in srgb, var(--blue) 16%, transparent); color: var(--blue); font-weight: 600; text-decoration: none; }
+/* «Купить» в шапке — главное действие с любой страницы; на узком экране шапка и так тесная */
+.top .top-buy { min-height: 2.6rem; border-radius: var(--r-m); font-size: 1rem; }
+/* «Купить» и «Выйти» занимают одно и то же место — кнопка имени рядом не прыгает */
+.top .top-buy, .top .out .btn { min-width: 6.75rem; justify-content: center; }
+/* вошёл в кабинет — «Купить» есть на самой странице, в шапке лишняя */
+.top .out ~ .top-buy { display: none; }
+.top .account:hover { background: color-mix(in srgb, var(--blue) 24%, transparent); }
+/* вошёл: кружок с первой буквой и имя */
+.top .account .avatar { width: 1.6rem; height: 1.6rem; margin-left: -.45rem; border-radius: 50%; display: grid; place-items: center;
+  background: var(--blue); color: var(--on-blue); font-size: .85rem; font-weight: 700; }
+.top .account .who { max-width: 9rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.top .account[aria-current] .avatar { background: var(--blue); color: var(--on-blue); }
+.top .out { margin: 0; }
+/* Язык сайта: значок и код языка, по нажатию — список из семи языков, каждый на своём языке (2026-11-14) */
+.top .lang { position: relative; }
+.top .lang summary { display: inline-flex; align-items: center; gap: .35rem; min-height: 2.6rem; padding: 0 .8rem;
+  border-radius: var(--r-m); color: var(--sub); font-weight: 600; cursor: pointer; list-style: none; user-select: none; }
+.top .lang summary::-webkit-details-marker { display: none; }
+.top .lang summary:hover, .top .lang[open] summary { color: var(--ink); background: var(--surface); }
+.top .lang summary:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }
+.top .lang .ms { font-size: 1.25rem; }
+.top .lang-menu { position: absolute; right: 0; top: calc(100% + .4rem); z-index: 50; min-width: 12rem; padding: .4rem;
+  display: grid; gap: .15rem; border-radius: var(--r-m); background: var(--raised); border: 1px solid var(--line);
+  box-shadow: 0 .75rem 2rem rgba(0, 0, 0, .45); }
+.top .lang-menu a { padding: .6rem .8rem; border-radius: var(--r-s); color: var(--ink); text-decoration: none; white-space: nowrap; }
+.top .lang-menu a:hover { background: var(--raised-hi); }
+.top .lang-menu a[aria-current] { color: var(--blue); background: color-mix(in srgb, var(--blue) 14%, transparent); }
+/* пометка на переводе юридических страниц: силу имеет русская версия */
+.lang-note { max-width: 72rem; margin: 1rem auto 0; padding: .8rem 1.1rem; border-radius: var(--r-m); color: var(--sub);
+  background: var(--surface); font-size: .95rem; }
+.top .out .btn { min-height: 2.6rem; padding: 0 .9rem; border-radius: var(--r-m); font-weight: 500; color: var(--sub); }
+.top .out .btn:hover { color: var(--ink); }
+
+/* логотип с подписью + 5 пунктов меню + «Кабинет»/имя и «Купить»/«Выйти» помещаются в строку только от ~1150 px:
+   на 1024 подпись обрезалась до «Deepal Tool» (2026-11-01) — до 1180 px логотип без подписи */
+@media (max-width: 1180px) { .brand span { display: none; } }
+/* Языки сайта (2026-11-14): шапка с меню языков и длинными названиями разделов на казахском/армянском не помещалась —
+   на средних экранах у языка только значок, у «Кабинета» — только значок человечка (подпись остаётся для экранного диктора). */
+@media (max-width: 1440px) { .top .lang-cur { display: none; } }
+@media (max-width: 1280px) { .top .account .acc-t { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  .top .account { padding: 0 .75rem; } }
+
+/* секции */
+section { padding: 4.5rem 0; }
+section + section { padding-top: 1rem; }
+/* последний блок страницы — до подвала столько же, сколько между блоками, без двойного отступа */
+main > section:last-of-type { padding-bottom: 4rem; }
+.section-head { margin-bottom: 1.8rem; }
+.section-head h2 { margin-bottom: 0; }
+.section-head p { color: var(--sub); margin: .6rem 0 0; }
+.page-head { padding: 3rem 0 0; }
+.page-head + section { padding-top: 2.2rem; }
+/* под кнопками шапки страницы новый раздел со своим заголовком — отделяем как обычные разделы */
+.page-head:has(.actions) + section { padding-top: 4rem; }
+.page-head .lead { margin-top: .9rem; }
+
+/* карточки и строки — как список настроек в Cockpit */
+.card { background: var(--surface); border-radius: var(--r-l); padding: 1.4rem 1.5rem; }
+.rows { display: grid; gap: .75rem; }
+.rows.two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.row { display: flex; align-items: center; gap: 1rem; background: var(--surface); border-radius: var(--r-m); padding: 1rem 1.15rem; min-height: 4.6rem;
+  color: var(--ink); text-decoration: none !important; }
+.row .txt { flex: 1; min-width: 0; }
+.row .txt b { display: block; font-weight: 600; font-size: 1.06rem; }
+.row .txt span { display: block; color: var(--sub); font-size: .95rem; margin-top: .15rem; }
+a.row { transition: background-color .15s; }
+a.row:hover { background: var(--surface-hi); }
+.row .chev { color: var(--idle); font-size: 1.6rem; }
+a.row:hover .chev { color: var(--sub); }
+
+/* переключатель как в Cockpit */
+.switch { position: relative; flex: none; width: 3.3rem; height: 1.95rem; border-radius: 999px; background: var(--switch-off); border: 0; cursor: pointer;
+  transition: background-color .2s; padding: 0; }
+.switch::after { content: ""; position: absolute; top: .22rem; left: .22rem; width: 1.5rem; height: 1.5rem; border-radius: 50%; background: var(--knob);
+  transition: transform .2s cubic-bezier(.3, .7, .4, 1); box-shadow: 0 1px 3px rgba(0, 0, 0, .35); }
+.switch[aria-checked="true"] { background: var(--blue); }
+.switch[aria-checked="true"]::after { transform: translateX(1.35rem); }
+.row .state { color: var(--blue); font-size: .95rem; font-weight: 500; }
+.row .state.off { color: var(--idle); }
+
+/* шаги — в машине так же: синие номера в кружках */
+ol.steps { counter-reset: s; list-style: none; padding: 0; margin: 0; display: grid; gap: .75rem; max-width: 46rem; }
+ol.steps > li { counter-increment: s; position: relative; background: var(--surface); border-radius: var(--r-m); padding: 1.1rem 1.2rem 1.1rem 4rem; }
+ol.steps > li::before { content: counter(s); position: absolute; left: 1.15rem; top: 1.05rem; width: 1.9rem; height: 1.9rem; border-radius: 50%;
+  display: grid; place-items: center; background: color-mix(in srgb, var(--blue) 18%, transparent); color: var(--blue); font-weight: 700; font-size: .95rem; }
+ol.steps h3 { margin-bottom: .25rem; }
+ol.steps p { color: var(--sub); margin: 0; }
+ol.steps p + p { margin-top: .5rem; }
+
+/* список с галочками: что входит */
+ul.ticks { list-style: none; padding: 0; margin: 1.1rem 0 0; display: grid; gap: .6rem; }
+ul.ticks li { position: relative; padding-left: 1.75rem; color: var(--sub); }
+ul.ticks li b { color: var(--ink); font-weight: 600; }
+ul.ticks li::before { content: "check"; font-family: "Material Symbols Rounded"; position: absolute; left: 0; top: .02em; font-size: 1.2rem; color: var(--green); }
+
+/* гарантия возврата и заметки */
+.guarantee { display: flex; gap: .9rem; align-items: flex-start; margin-top: 1.3rem; padding: 1rem 1.1rem;
+  border-radius: var(--r-m); background: color-mix(in srgb, var(--green) 8%, var(--raised)); }
+.guarantee p { margin: 0; color: var(--sub); font-size: .95rem; }
+.guarantee b { color: var(--ink); }
+.note-box { background: color-mix(in srgb, var(--blue) 9%, var(--surface)); border-radius: var(--r-m); padding: 1rem 1.2rem; color: var(--ink); margin-top: 1rem; }
+.note-box p { margin: 0; }
+
+/* подвал */
+.foot { margin-top: 0; border-top: 1px solid var(--line); padding: 3rem 0 2rem; color: var(--sub); font-size: .95rem; }
+.foot > .wrap:first-child { display: grid; grid-template-columns: minmax(0, 1.5fr) repeat(3, minmax(0, 1fr)); gap: 2rem; }
+.foot-brand p { margin: .9rem 0 1.2rem; max-width: 22rem; }
+.foot .channel { display: inline-flex; align-items: center; gap: .55rem; padding: .7rem 1.1rem; border-radius: var(--r-m);
+  background: var(--blue); color: var(--on-blue); font-weight: 600; text-decoration: none; }
+.foot .channel:hover { background: var(--blue-hi); }
+.foot .channel svg { width: 1.15rem; height: 1.15rem; }
+/* сообщество — главная кнопка, канал — вторая (владелец 2026-11-02: основное теперь сообщество) */
+.foot-tg { display: flex; flex-wrap: wrap; gap: .5rem; }
+.foot .channel.quiet { background: var(--raised); color: var(--ink); }
+.foot .channel.quiet:hover { background: var(--raised-hi); }
+.foot-col { display: grid; align-content: start; gap: .55rem; }
+.foot-col .foot-h { font-size: .95rem; color: var(--ink); font-weight: 600; margin: 0 0 .2rem; letter-spacing: 0; }
+.foot-col a { color: var(--sub); }
+.foot-col a:hover { color: var(--ink); }
+.foot-note { display: flex; flex-wrap: wrap; justify-content: space-between; gap: .5rem 2rem; margin-top: 2.5rem; padding-top: 1.4rem;
+  border-top: 1px solid var(--line); font-size: .88rem; }
+
+/* одни и те же точки перелома везде: 960 / 760 / 480 / 420 */
+@media (max-width: 960px) {
+  .foot > .wrap:first-child { grid-template-columns: 1fr 1fr; }
+  .foot-brand { grid-column: 1 / -1; }
+  /* планшет: вся шапка в одну строку — без подписи у логотипа, плотнее пункты */
+  .top .wrap { gap: 1rem; }
+  .top nav a { padding: .5rem .6rem; }
+  .brand span { display: none; }
+  .top .account .who { display: none; }
+}
+/* Шапка — исключение из общих точек: пять пунктов меню и две кнопки в одну строку занимают ~880 px, поэтому меню
+   уходит второй строкой уже с 900 px (на 768 px «Купить» уезжал за край — 2026-11-01). */
+@media (max-width: 1500px) { .top nav a { padding: .5rem .6rem; } }
+/* армянские названия разделов самые длинные — пункты меню плотнее */
+html:lang(hy) .top nav a { padding: .5rem .45rem; font-size: .95rem; }
+/* меню второй строкой — с 1180 px (было с 900): с меню языков и длинными названиями на других языках в одну строку не влезало */
+@media (max-width: 1180px) {
+  .top .wrap { flex-wrap: wrap; gap: .4rem 1rem; padding-top: .55rem; padding-bottom: .55rem; }
+  .top nav { order: 3; width: 100%; margin: 0 -.45rem; overflow-x: auto; scrollbar-width: none; gap: 0; justify-content: space-between; }
+  .top nav a { padding: .45rem .45rem; font-size: .96rem; }
+}
+@media (max-width: 760px) {
+  .rows.two { grid-template-columns: 1fr; }
+  /* пять пунктов шире телефона (~450 из 343 px): меню листается вбок — затухание справа показывает, что дальше есть ещё,
+     а отступ в конце даёт последнему пункту («Помощь») выйти из затухания (2026-11-01) */
+  .top nav { padding-right: 2.2rem; -webkit-mask-image: linear-gradient(to right, black calc(100% - 2.2rem), transparent);
+    mask-image: linear-gradient(to right, black calc(100% - 2.2rem), transparent); }
+  .foot-col { gap: 0; }
+  .foot-col a { padding: .45rem 0; }   /* под палец */
+  .brand span { display: none; }
+}
+@media (max-width: 420px) {
+  .wrap { padding: 0 1rem; }
+  .foot > .wrap:first-child { grid-template-columns: 1fr; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+}

@@ -1,307 +1,154 @@
 <!doctype html>
+
 <html lang="ru">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Поддержать Deepal Tools</title>
-<meta name="description" content="Приложения Deepal Tools бесплатные. Поддержать проект можно через Tribute или Boosty.">
-<meta name="theme-color" content="#021458">
-<meta property="og:title" content="Поддержать Deepal Tools">
-<meta property="og:description" content="Tribute или Boosty — как вам удобнее.">
-<meta property="og:type" content="website">
-<meta property="og:site_name" content="Deepal Tools">
-<meta property="og:url" content="https://deepaltools.github.io/donate/">
-<!-- Широкая обложка 1200×630: с ней Telegram и другие показывают большое превью ссылки. -->
-<meta property="og:image" content="https://deepaltools.github.io/assets/preview-donate.png?v=4">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
-<meta name="twitter:card" content="summary_large_image">
-<link rel="icon" href="../assets/deepal-tools.png?v=4">
-<link rel="apple-touch-icon" href="../assets/deepal-tools.png?v=4">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Unbounded:wght@500;700&display=swap" rel="stylesheet">
-<style>
-  :root {
-    /* Цвета взяты со значка Deepal Tools: его фон и свечение контура. */
-    --navy: #021458;
-    --navy-deep: #010C38;
-    --glow: #00E5FF;
-    --white: #F3F7FF;
-    --mist: #A9B8E8;
-    /* Фирменные цвета сервисов — с их собственных значков. */
-    --tribute: #3399FF;
-    --tribute-deep: #1E7FE6;
-    --boosty: #F15F2C;
-    --boosty-deep: #D94A1A;
-  }
-
-  * { box-sizing: border-box; }
-
-  html, body { margin: 0; }
-
-  body {
-    min-height: 100vh;
-    min-height: 100dvh;
-    background:
-      radial-gradient(120% 70% at 50% 0%, var(--navy) 0%, var(--navy) 45%, var(--navy-deep) 100%);
-    background-color: var(--navy-deep);
-    color: var(--white);
-    font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-    -webkit-font-smoothing: antialiased;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    /* Содержимое — по центру экрана, подпись снизу тянет его чуть выше середины. */
-    justify-content: center;
-    padding: max(20px, env(safe-area-inset-top)) 20px max(24px, env(safe-area-inset-bottom));
-  }
-
-  main {
-    width: 100%;
-    max-width: 802px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-  }
-
-  /* Значок целиком, без обрезки: квадратный тёмно-синий фон картинки совпадает с фоном
-     страницы, а края мягко гаснут, чтобы на любом экране не проступил шов. */
-  /* Размер значка зависит и от ширины, и от высоты окна, чтобы на низком экране
-     плитки с кнопками помещались целиком. height: auto обязателен — иначе атрибут
-     height у картинки задаёт высоту отдельно от ширины и значок сплющивается.
-     Отрицательные поля съедают пустой фон вокруг треугольника. */
-  .mark {
-    --s: clamp(150px, min(52vw, 34vh), 280px);
-    width: var(--s);
-    height: auto;
-    aspect-ratio: 1 / 1;
-    margin: calc(var(--s) * -0.2) 0 calc(var(--s) * -0.14);
-    display: block;
-    -webkit-mask-image: radial-gradient(circle at 50% 50%, #000 52%, transparent 71%);
-            mask-image: radial-gradient(circle at 50% 50%, #000 52%, transparent 71%);
-    animation: wake 1.6s cubic-bezier(.2,.7,.2,1) both;
-  }
-
-  @keyframes wake {
-    0%   { opacity: 0; transform: scale(.94); }
-    100% { opacity: 1; transform: scale(1); }
-  }
-
-  /* Фон картинки значка заходит под заголовок; текст — поверх него, иначе ложится тенью. */
-  h1, .lede, .choices { position: relative; z-index: 1; }
-
-  h1 {
-    font-family: "Unbounded", "Inter", sans-serif;
-    font-weight: 700;
-    font-size: clamp(28px, min(7.4vw, 6vh), 52px);
-    line-height: 1.08;
-    letter-spacing: -0.01em;
-    margin: 4px 0 0;
-  }
-
-  .lede {
-    margin: 16px 0 0;
-    max-width: 30em;
-    font-size: clamp(17px, 4.2vw, 19px);
-    line-height: 1.55;
-    color: var(--mist);
-  }
-
-  /* Ширина плитки = две кнопки Tribute (335) + поле 28 слева и справа = 391;
-     две плитки и зазор 20 — 802. Колонки 1fr 1fr: Boosty ровно такой же ширины. */
-  .choices {
-    width: 802px;
-    max-width: 100%;
-    margin-top: clamp(20px, 4vh, 40px);
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 20px;
-  }
-
-  .pay {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    text-align: left;
-    gap: 18px;
-    padding: 28px;
-    border-radius: 28px;
-    color: #fff;
-    text-decoration: none;
-    min-height: min(220px, 26vh);
-    overflow: hidden;
-    transition: transform .18s ease, box-shadow .18s ease;
-    -webkit-tap-highlight-color: transparent;
-  }
-
-  .pay:active { transform: scale(.98); }
-
-  .pay:focus-visible {
-    outline: 3px solid var(--glow);
-    outline-offset: 4px;
-  }
-
-  .pay.tribute {
-    background: linear-gradient(160deg, var(--tribute) 0%, var(--tribute-deep) 100%);
-    box-shadow: 0 18px 40px -18px rgba(51, 153, 255, .75);
-  }
-
-  .pay.boosty {
-    background: linear-gradient(160deg, var(--boosty) 0%, var(--boosty-deep) 100%);
-    box-shadow: 0 18px 40px -18px rgba(241, 95, 44, .75);
-  }
-
-  @media (hover: hover) {
-    .pay:hover { transform: translateY(-3px); }
-  }
-
-  .badge {
-    width: 64px;
-    height: 64px;
-    border-radius: 18px;
-    background: #fff;
-    display: grid;
-    place-items: center;
-    flex: none;
-  }
-
-  .badge img { width: 46px; height: 46px; display: block; }
-  .badge svg { width: 38px; height: 38px; display: block; }
-
-  .name {
-    font-family: "Inter", sans-serif;
-    font-weight: 700;
-    font-size: 30px;
-    line-height: 1;
-    letter-spacing: -0.02em;
-  }
-
-  .text { display: flex; flex-direction: column; gap: 8px; }
-
-  .how {
-    font-size: 16px;
-    line-height: 1.45;
-    color: rgba(255, 255, 255, .88);
-    max-width: 22em;
-  }
-
-  .go {
-    margin-top: auto;
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    padding: 12px 18px;
-    border-radius: 999px;
-    background: rgba(255, 255, 255, .18);
-    font-weight: 600;
-    font-size: 16px;
-  }
-
-  .go svg { width: 18px; height: 18px; }
-
-  a.go { color: #fff; text-decoration: none; transition: background .18s ease; }
-  a.go:focus-visible { outline: 3px solid var(--glow); outline-offset: 3px; }
-  .gos .go { background: rgba(255, 255, 255, .24); }
-  .gos .go.ghost { background: transparent; box-shadow: inset 0 0 0 2px rgba(255, 255, 255, .55); }
-  @media (hover: hover) {
-    a.go:hover { background: rgba(255, 255, 255, .34); }
-  }
-
-  /* Две кнопки Tribute — рядом, а на телефоне друг под другом во всю ширину. */
-  .gos {
-    margin-top: auto;
-    display: flex;
-    gap: 10px;
-  }
-  .gos .go { margin-top: 0; white-space: nowrap; }
-
-  /* Плитка Tribute нажимается целиком, как Boosty, и ведёт в Telegram: невидимый слой
-     ссылки «Открыть в Telegram» растянут на всю плитку. Веб-версия лежит выше этого слоя
-     и открывается только своей кнопкой. */
-  .pay.tribute { cursor: pointer; }
-  .go.main::after { content: ""; position: absolute; inset: 0; border-radius: 28px; }
-  .pay.tribute .go.main { position: static; }
-  .go.ghost { position: relative; z-index: 1; }
-  .pay.tribute:active:not(:has(.go.ghost:active)) { transform: scale(.98); }
-
-  footer {
-    padding-top: clamp(20px, 4vh, 44px);
-    text-align: center;
-    font-size: 15px;
-    line-height: 1.6;
-    color: var(--mist);
-  }
-
-  footer a {
-    color: var(--white);
-    text-decoration: none;
-    border-bottom: 1px solid rgba(243, 247, 255, .35);
-  }
-
-  footer a:focus-visible { outline: 2px solid var(--glow); outline-offset: 3px; border-radius: 4px; }
-
-  @media (max-width: 600px) {
-        h1 { font-size: 28px; }
-    .lede { font-size: 16px; }
-    .choices { width: 100%; grid-template-columns: 1fr; gap: 12px; margin-top: 22px; }
-    .lede { margin-top: 12px; }
-    .pay { min-height: 0; padding: 20px; gap: 14px; flex-direction: row; flex-wrap: wrap; align-items: flex-start; }
-    .pay .text { flex: 1 1 0; }
-    .text { gap: 4px; }
-    .go { flex-basis: 100%; justify-content: center; margin-top: 4px; }
-    .gos { flex-basis: 100%; margin-top: 4px; }
-    .gos { flex-direction: column; }
-    .name { font-size: 26px; }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .mark { animation: none; }
-    .pay { transition: none; }
-  }
-</style>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>Deepal Tools — сообщество, поддержка и контакты</title>
+<meta content="Сообщество и канал Deepal Tools в Telegram, бот для покупки кода Cockpit, сайт, связь с разработчиком и поддержка проекта." name="description"/>
+<meta content="Deepal Tools — сообщество, поддержка и контакты" property="og:title"/>
+<meta content="Сообщество и канал Deepal Tools в Telegram, бот для покупки кода Cockpit, сайт, связь с разработчиком и поддержка проекта." property="og:description"/>
+<link href="https://deepaltools.com/links/" rel="canonical"/><link href="https://deepaltools.com/hy/links/" hreflang="hy" rel="alternate"/><link href="https://deepaltools.com/az/links/" hreflang="az" rel="alternate"/><link href="https://deepaltools.com/ky/links/" hreflang="ky" rel="alternate"/><link href="https://deepaltools.com/kk/links/" hreflang="kk" rel="alternate"/><link href="https://deepaltools.com/uz/links/" hreflang="uz" rel="alternate"/><link href="https://deepaltools.com/en/links/" hreflang="en" rel="alternate"/><link href="https://deepaltools.com/links/" hreflang="ru" rel="alternate"/>
+<meta content="website" property="og:type"/>
+<meta content="https://deepaltools.com/links/" property="og:url"/>
+<meta content="https://deepaltools.com/assets/preview.png?v=b06aa7fb22" property="og:image"/>
+<meta content="1200" property="og:image:width"/>
+<meta content="630" property="og:image:height"/>
+<meta content="summary_large_image" name="twitter:card"/>
+<meta content="ru_RU" property="og:locale"/>
+<meta content="Deepal Tools" property="og:site_name"/>
+<meta content="#06080B" name="theme-color"/>
+<link href="/assets/deepal-tools.png?v=bff57fbc48" rel="icon" type="image/png"/>
+<link href="/assets/deepal-tools.png?v=bff57fbc48" rel="apple-touch-icon"/>
+<link as="font" crossorigin="" href="/assets/fonts/roboto-cyrillic.woff2?v=32886c5ec6" rel="preload" type="font/woff2"/>
+<link as="font" crossorigin="" href="/assets/fonts/material-symbols.woff2?v=08b8d67136" rel="preload" type="font/woff2"/>
+<link href="/assets/fonts/fonts.css?v=b6f32b4de0" rel="stylesheet"/>
+<link href="/assets/base.css?v=0021d8f76d" rel="stylesheet"/>
 </head>
-<body>
-<main>
-  <img class="mark" src="../assets/deepal-tools.png?v=4" alt="Deepal Tools" width="300" height="300">
+<body class="card-page">
+<main id="main">
+<link href="/assets/links/unbounded.css" rel="stylesheet"/>
+<style>
+  /* Визитка по QR-коду. Владелец 14.11: всё сразу на первом экране телефона (Tribute, Boosty, сообщество, канал,
+     бот, сайт, разработчик), шапка компактная, как на сайте; плитки сочные, как на прежней странице доната;
+     без подчёркиваний при наведении. Цвета — свои: фон и свечение со значка Deepal Tools. */
+  .card-page {
+    --navy: #021458; --navy-deep: #010C38; --glow: #00E5FF; --mist: #A9B8E8; --snow: #F3F7FF;
+    --tribute: #3399FF; --tribute-deep: #1E6FE0; --boosty: #F15F2C; --boosty-deep: #CF4314;
+    --teal: #19D3A4; --teal-deep: #0A8E74; --tg: #2AABEE; --tg-deep: #1676C9;
+    --violet: #9B6BFF; --violet-deep: #5B32D6;
+    --tribute-solid: #2A85F5; --boosty-solid: #E9541F; --teal-solid: #13A887; --tg-solid: #2196E3;
+    --violet-solid: #7A4FF0; --site-solid: #0B2C80;
+    background: radial-gradient(130% 60% at 50% 0%, var(--navy) 0%, var(--navy) 40%, var(--navy-deep) 100%);
+    background-color: var(--navy-deep); color: var(--snow); min-height: 100dvh;
+  }
+  .lk a, .lk a:hover { text-decoration: none; }
+  .lk { max-width: 30rem; margin: 0 auto; padding: max(14px, env(safe-area-inset-top)) 14px max(24px, env(safe-area-inset-bottom)); }
 
-  <h1>Поддержать Deepal&nbsp;Tools</h1>
-  <p class="lede">Все приложения бесплатные. Если они вам пригодились, выберите, как поддержать проект.</p>
+  .lk-top { display: flex; align-items: center; gap: 12px; padding: 4px 2px 0; }
+  .lk-top img { width: 48px; height: 48px; border-radius: 13px; flex: none; box-shadow: 0 6px 22px -6px rgba(0, 229, 255, .55); }
+  .lk-top h1 { font-family: "Unbounded", var(--font); font-weight: 700; font-size: 21px; line-height: 1.1; margin: 0; letter-spacing: -.01em; }
+  .lk-top p { margin: 3px 0 0; color: var(--mist); font-size: 13.5px; }
 
-  <div class="choices">
-    <!-- У Tribute два входа: мини-приложение в Telegram и веб-версия в браузере. -->
-    <div class="pay tribute">
-      <span class="badge"><img src="../assets/tribute.png" alt="" width="46" height="46"></span>
-      <span class="text">
-        <span class="name">Tribute</span>
-        <span class="how">В Telegram или в браузере</span>
-      </span>
-      <span class="gos">
-        <a class="go main" href="https://t.me/tribute/app?startapp=dPI5" rel="noopener">Открыть в Telegram</a>
-        <a class="go ghost" href="https://web.tribute.tg/d/PI5" rel="noopener">Веб-версия</a>
-      </span>
-    </div>
+  .lk-h { font-family: "Unbounded", var(--font); font-weight: 700; font-size: 12.5px; letter-spacing: .02em; margin: 18px 2px 8px; color: var(--mist); }
 
-    <a class="pay boosty" href="https://boosty.to/deepaltools/donate" rel="noopener">
-      <span class="badge">
-        <!-- Знак Boosty — фирменный, из Simple Icons (источник: boosty.to/app/brand). -->
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#F15F2C" d="M2.661 14.337 6.801 0h6.362L11.88 4.444l-.038.077-3.378 11.733h3.15c-1.321 3.289-2.35 5.867-3.086 7.733-5.816-.063-7.442-4.228-6.02-9.155M8.554 24l7.67-11.035h-3.25l2.83-7.073c4.852.508 7.137 4.33 5.791 8.952C20.16 19.81 14.344 24 8.68 24h-.127z"/></svg>
-      </span>
-      <span class="text">
-        <span class="name">Boosty</span>
-        <span class="how">Картой, если Tribute не открывается</span>
-      </span>
-      <span class="go">Поддержать через Boosty
-      </span>
-    </a>
-  </div>
+  .tiles { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .tile {
+    position: relative; display: flex; align-items: center; gap: 10px; padding: 12px; min-height: 74px;
+    border-radius: 20px; color: #fff; overflow: hidden; isolation: isolate;
+    transition: transform .16s ease, filter .16s ease; -webkit-tap-highlight-color: transparent;
+  }
+  .tile:active { transform: scale(.97); }
+  .tile:focus-visible { outline: 3px solid var(--glow); outline-offset: 3px; }
+  @media (hover: hover) { .tile:hover { filter: brightness(1.08); } }
+  .tile .badge { width: 40px; height: 40px; border-radius: 12px; display: grid; place-items: center; flex: none; background: rgba(255, 255, 255, .22); }
+  .tile .badge .ms { font-size: 23px; color: #fff; }
+  .tile .badge.white { background: #fff; }
+  .tile .badge.white img { width: 30px; height: 30px; display: block; }
+  .tile .badge.white svg { width: 24px; height: 24px; display: block; }
+  .tile .tx { min-width: 0; }
+  .tile b { display: block; font-size: 16.5px; font-weight: 700; line-height: 1.15; letter-spacing: -.01em; }
+  .tile .sub { display: block; font-size: 12.5px; line-height: 1.3; color: rgba(255, 255, 255, .86); margin-top: 2px; }
+
+  /* Владелец 15.11: заливка ровная, одним цветом — без бликов и переходов. */
+  .tile.tribute { background: var(--tribute-solid); box-shadow: 0 12px 28px -14px rgba(51, 153, 255, .85); }
+  .tile.boosty  { background: var(--boosty-solid); box-shadow: 0 12px 28px -14px rgba(241, 95, 44, .85); }
+  .tile.community { background: var(--teal-solid); box-shadow: 0 12px 28px -14px rgba(25, 211, 164, .75); }
+  .tile.channel { background: var(--tg-solid); box-shadow: 0 12px 28px -14px rgba(42, 171, 238, .8); }
+  .tile.bot { background: var(--violet-solid); box-shadow: 0 12px 28px -14px rgba(155, 107, 255, .8); }
+  .tile.site { background: var(--site-solid); box-shadow: inset 0 0 0 1.5px rgba(0, 229, 255, .55), 0 12px 28px -16px rgba(0, 229, 255, .6); }
+
+  .dev {
+    margin-top: 10px; display: flex; align-items: center; gap: 12px; padding: 11px 14px; border-radius: 20px;
+    background: rgba(255, 255, 255, .08); box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .13);
+    color: var(--snow); transition: transform .16s ease, background .16s ease;
+  }
+  .dev:active { transform: scale(.98); }
+  .dev:focus-visible { outline: 3px solid var(--glow); outline-offset: 3px; }
+  @media (hover: hover) { .dev:hover { background: rgba(255, 255, 255, .12); } }
+  .dev .badge { width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; flex: none;
+    background: linear-gradient(160deg, var(--glow), var(--tribute-deep)); }
+  .dev .badge .ms { font-size: 23px; color: #fff; }
+  .dev b { display: block; font-size: 16px; font-weight: 600; }
+  .dev .sub { display: block; font-size: 13px; color: var(--mist); margin-top: 1px; }
+  .dev .go { margin-left: auto; font-size: 22px; color: var(--mist); }
+
+  .lk-more { margin-top: 22px; text-align: center; color: var(--mist); font-size: 13.5px; line-height: 1.6; }
+  .lk-more a { color: var(--snow); border-bottom: 1px solid rgba(243, 247, 255, .3); }
+  .lk-langs { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-top: 16px; }
+  .lk-langs a { padding: 6px 11px; border-radius: 999px; color: var(--mist); font-size: 13px; background: rgba(255, 255, 255, .06); }
+  .lk-langs a[aria-current] { color: var(--snow); background: rgba(255, 255, 255, .16); }
+  .lk-langs a:focus-visible, .lk-more a:focus-visible { outline: 2px solid var(--glow); outline-offset: 2px; }
+
+  @media (max-width: 340px) { .tile { flex-direction: column; align-items: flex-start; } }
+  @media (prefers-reduced-motion: reduce) { .tile, .dev { transition: none; } }
+</style>
+<div class="lk">
+<header class="lk-top">
+<img alt="" height="48" src="/assets/deepal-tools.png?v=bff57fbc48" width="48"/>
+<div>
+<h1>Deepal Tools</h1>
+<p>Приложения для Deepal S07</p>
+</div>
+</header>
+<h2 class="lk-h">Поддержать проект</h2>
+<div class="tiles">
+<a class="tile tribute" href="https://t.me/tribute/app?startapp=dPI5">
+<span class="badge white"><img alt="" height="30" src="/assets/links/tribute.png?v=4886d30d17" width="30"/></span>
+<span class="tx"><b>Tribute</b><span class="sub">В Telegram</span></span>
+</a>
+<a class="tile boosty" href="https://boosty.to/deepaltools/donate">
+<span class="badge white"><svg aria-hidden="true" viewbox="0 0 24 24"><path d="M2.661 14.337 6.801 0h6.362L11.88 4.444l-.038.077-3.378 11.733h3.15c-1.321 3.289-2.35 5.867-3.086 7.733-5.816-.063-7.442-4.228-6.02-9.155M8.554 24l7.67-11.035h-3.25l2.83-7.073c4.852.508 7.137 4.33 5.791 8.952C20.16 19.81 14.344 24 8.68 24h-.127z" fill="#F15F2C"></path></svg></span>
+<span class="tx"><b>Boosty</b><span class="sub">Картой</span></span>
+</a>
+</div>
+<h2 class="lk-h">Telegram и сайт</h2>
+<div class="tiles">
+<a class="tile community" href="https://t.me/deepal_tools_community">
+<span class="badge"><span aria-hidden="true" class="ms">forum</span></span>
+<span class="tx"><b>Сообщество</b><span class="sub">Вопросы и помощь</span></span>
+</a>
+<a class="tile channel" href="https://t.me/deepal_tools">
+<span class="badge"><span aria-hidden="true" class="ms">campaign</span></span>
+<span class="tx"><b>Канал</b><span class="sub">Новости</span></span>
+</a>
+<a class="tile bot" href="https://t.me/DeepalToolsBot">
+<span class="badge"><span aria-hidden="true" class="ms">shopping_bag</span></span>
+<span class="tx"><b>Бот</b><span class="sub">Купить код Cockpit</span></span>
+</a>
+<a class="tile site" href="https://deepaltools.com/">
+<span class="badge"><span aria-hidden="true" class="ms">home</span></span>
+<span class="tx"><b>Сайт</b><span class="sub">Приложения</span></span>
+</a>
+</div>
+<a class="dev" href="https://t.me/andes_dev">
+<span class="badge"><span aria-hidden="true" class="ms">person</span></span>
+<span><b>Написать разработчику</b><span class="sub">@andes_dev в Telegram</span></span>
+<span aria-hidden="true" class="ms go">chevron_right</span>
+</a>
+<p class="lk-more">Tribute не открывается в Telegram? <a href="https://web.tribute.tg/d/PI5">Открыть в браузере</a><br/>Спасибо, что вы с нами.</p>
+<nav aria-label="Language" class="lang-menu lk-langs"><a aria-current="true" href="https://deepaltools.com/links/" hreflang="ru" lang="ru">Русский</a><a href="https://deepaltools.com/en/links/" hreflang="en" lang="en">English</a><a href="https://deepaltools.com/uz/links/" hreflang="uz" lang="uz">Oʻzbekcha</a><a href="https://deepaltools.com/kk/links/" hreflang="kk" lang="kk">Қазақша</a><a href="https://deepaltools.com/ky/links/" hreflang="ky" lang="ky">Кыргызча</a><a href="https://deepaltools.com/az/links/" hreflang="az" lang="az">Azərbaycanca</a><a href="https://deepaltools.com/hy/links/" hreflang="hy" lang="hy">Հայերեն</a></nav>
+</div>
 </main>
-
-<footer>
-  Спасибо, что вы с нами.<br>
-  Новости и обновления — в канале <a href="https://t.me/deepal_tools">@deepal_tools</a>
-</footer>
 </body>
 </html>
