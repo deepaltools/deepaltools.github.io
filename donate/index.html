@@ -76,14 +76,14 @@
   .tile:active { transform: scale(.97); }
   .tile:focus-visible { outline: 3px solid var(--glow); outline-offset: 3px; }
   @media (hover: hover) { .tile:hover { filter: brightness(1.08); } }
-  .tile .badge { width: 44px; height: 44px; border-radius: 13px; display: grid; place-items: center; flex: none; background: rgba(255, 255, 255, .22); }
-  .tile .badge .ms { font-size: 25px; color: #fff; }
+  .tile .badge { width: 54px; height: 54px; border-radius: 16px; display: grid; place-items: center; flex: none; background: rgba(255, 255, 255, .22); }
+  .tile .badge .ms { font-size: 31px; color: #fff; }
   .tile .badge.white { background: #fff; }
-  .tile .badge.white img { width: 32px; height: 32px; display: block; }
-  .tile .badge.white svg { width: 26px; height: 26px; display: block; }
+  .tile .badge.white img { width: 40px; height: 40px; display: block; }
+  .tile .badge.white svg { width: 32px; height: 32px; display: block; }
   .tile .tx { min-width: 0; }
-  .tile b { display: block; font-size: 17px; font-weight: 700; line-height: 1.15; letter-spacing: -.01em; }
-  .tile .sub { display: block; font-size: 13px; line-height: 1.3; color: rgba(255, 255, 255, .86); margin-top: 2px; }
+  .tile b { display: block; font-size: 21px; font-weight: 700; line-height: 1.15; letter-spacing: -.01em; }
+  .tile .sub { display: block; font-size: 14.5px; line-height: 1.3; color: rgba(255, 255, 255, .86); margin-top: 2px; }
 
   .tile.tribute { background: var(--tribute-solid); }
   .tile.boosty { background: var(--boosty-solid); }
@@ -100,10 +100,10 @@
   .dev:active { transform: scale(.98); }
   .dev:focus-visible { outline: 3px solid var(--glow); outline-offset: 3px; }
   @media (hover: hover) { .dev:hover { background: rgba(255, 255, 255, .12); } }
-  .dev .badge { width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; flex: none; background: var(--tg-solid); }
-  .dev .badge .ms { font-size: 25px; color: #fff; }
-  .dev b { display: block; font-size: 16px; font-weight: 600; line-height: 1.2; }
-  .dev .sub { display: block; font-size: 13px; line-height: 1.3; color: var(--mist); margin-top: 1px; }
+  .dev .badge { width: 50px; height: 50px; border-radius: 50%; display: grid; place-items: center; flex: none; background: var(--tg-solid); }
+  .dev .badge .ms { font-size: 28px; color: #fff; }
+  .dev b { display: block; font-size: 18.5px; font-weight: 600; line-height: 1.2; }
+  .dev .sub { display: block; font-size: 14px; line-height: 1.3; color: var(--mist); margin-top: 1px; }
   .dev .go { margin-left: auto; font-size: 22px; color: var(--mist); }
 
   .lk-more { margin: 18px 0 0; text-align: center; color: var(--mist); font-size: 13.5px; line-height: 1.6; }
@@ -116,14 +116,16 @@
     .lk-h { margin: 12px 2px 6px; }
     .tiles { grid-auto-rows: minmax(84px, 1fr); gap: 8px; }
     .tile { gap: 6px; }
-    .tile .badge { width: 38px; height: 38px; border-radius: 11px; }
-    .tile .badge .ms { font-size: 22px; }
-    .tile .badge.white img { width: 28px; height: 28px; }
-    .tile .badge.white svg { width: 22px; height: 22px; }
-    .tile b { font-size: 16px; }
-    .tile .sub { font-size: 12.5px; }
+    .tile .badge { width: 44px; height: 44px; border-radius: 13px; }
+    .tile .badge .ms { font-size: 25px; }
+    .tile .badge.white img { width: 32px; height: 32px; }
+    .tile .badge.white svg { width: 26px; height: 26px; }
+    .tile b { font-size: 18px; }
+    .tile .sub { font-size: 13px; }
     .dev { margin-top: 8px; padding: 12px; }
-    .dev .badge { width: 40px; height: 40px; }
+    .dev .badge { width: 44px; height: 44px; }
+    .dev b { font-size: 16.5px; }
+    .dev .sub { font-size: 13px; }
     .lk-more { margin-top: 12px; font-size: 13px; line-height: 1.5; }
   }
   @media (prefers-reduced-motion: reduce) { .tile, .dev { transition: none; } }
