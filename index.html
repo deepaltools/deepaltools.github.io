@@ -29,78 +29,103 @@
 <main id="main">
 <link href="/assets/links/unbounded.css" rel="stylesheet"/>
 <style>
-  /* Визитка по QR-коду. Владелец 14.11: всё сразу на первом экране телефона (Tribute, Boosty, сообщество, канал,
-     бот, сайт, разработчик), шапка компактная, как на сайте; плитки сочные, как на прежней странице доната;
-     без подчёркиваний при наведении. Цвета — свои: фон и свечение со значка Deepal Tools. */
+  /* Визитка по QR-коду. Владелец 14–15.11: всё сразу на экране телефона и на ВЕСЬ экран (без пустоты снизу), язык —
+     кнопкой в правом верхнем углу, заливки ровные без бликов и обводок, у значка нет свечения, без подчёркиваний.
+     Плитки вертикальные: значок в левом верхнем углу, текст внизу, отступ 16 px со всех сторон одинаковый —
+     так он не зависит от высоты плитки (она растягивается под экран). */
   .card-page {
     --navy: #021458; --navy-deep: #010C38; --glow: #00E5FF; --mist: #A9B8E8; --snow: #F3F7FF;
-    --tribute: #3399FF; --tribute-deep: #1E6FE0; --boosty: #F15F2C; --boosty-deep: #CF4314;
-    --teal: #19D3A4; --teal-deep: #0A8E74; --tg: #2AABEE; --tg-deep: #1676C9;
-    --violet: #9B6BFF; --violet-deep: #5B32D6;
     --tribute-solid: #2A85F5; --boosty-solid: #E9541F; --teal-solid: #13A887; --tg-solid: #2196E3;
-    --violet-solid: #7A4FF0; --site-solid: #0B2C80;
+    --violet-solid: #7A4FF0; --site-solid: #1F3C9E; --pad: 16px;
     background: radial-gradient(130% 60% at 50% 0%, var(--navy) 0%, var(--navy) 40%, var(--navy-deep) 100%);
-    background-color: var(--navy-deep); color: var(--snow); min-height: 100dvh;
+    background-color: var(--navy-deep); color: var(--snow);
   }
   .lk a, .lk a:hover { text-decoration: none; }
-  .lk { max-width: 30rem; margin: 0 auto; padding: max(14px, env(safe-area-inset-top)) 14px max(24px, env(safe-area-inset-bottom)); }
+  .lk { max-width: 30rem; min-height: 100dvh; margin: 0 auto; display: flex; flex-direction: column;
+    padding: max(14px, env(safe-area-inset-top)) 14px max(16px, env(safe-area-inset-bottom)); box-sizing: border-box; }
 
   .lk-top { display: flex; align-items: center; gap: 12px; padding: 4px 2px 0; }
-  .lk-top img { width: 48px; height: 48px; border-radius: 13px; flex: none; box-shadow: 0 6px 22px -6px rgba(0, 229, 255, .55); }
+  .lk-top img { width: 48px; height: 48px; border-radius: 13px; flex: none; }
   .lk-top h1 { font-family: "Unbounded", var(--font); font-weight: 700; font-size: 21px; line-height: 1.1; margin: 0; letter-spacing: -.01em; }
   .lk-top p { margin: 3px 0 0; color: var(--mist); font-size: 13.5px; }
 
+  .lk-lang { margin-left: auto; position: relative; align-self: flex-start; }
+  .lk-lang summary { display: inline-flex; align-items: center; gap: 4px; height: 40px; padding: 0 12px; border-radius: 999px;
+    background: rgba(255, 255, 255, .1); color: var(--snow); font-weight: 600; font-size: 14px; cursor: pointer; list-style: none;
+    user-select: none; -webkit-tap-highlight-color: transparent; }
+  .lk-lang summary::-webkit-details-marker { display: none; }
+  .lk-lang summary .ms { font-size: 20px; }
+  .lk-lang summary:focus-visible { outline: 2px solid var(--glow); outline-offset: 2px; }
+  .lk-lang .lang-menu { position: absolute; right: 0; top: calc(100% + 6px); z-index: 10; min-width: 11rem; padding: 6px;
+    display: grid; gap: 2px; border-radius: 16px; background: #0B1F6E; box-shadow: 0 14px 36px rgba(0, 0, 0, .5); }
+  .lk-lang .lang-menu a { padding: 10px 12px; border-radius: 10px; color: var(--snow); font-size: 15px; }
+  .lk-lang .lang-menu a[aria-current] { background: rgba(255, 255, 255, .14); }
+  .lk-lang .lang-menu a:focus-visible { outline: 2px solid var(--glow); outline-offset: -2px; }
+
   .lk-h { font-family: "Unbounded", var(--font); font-weight: 700; font-size: 12.5px; letter-spacing: .02em; margin: 18px 2px 8px; color: var(--mist); }
 
-  .tiles { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  /* Плитки растут вместе с экраном: доля доната — 1, ссылок (два ряда) — 2. */
+  .tiles { display: grid; grid-template-columns: 1fr 1fr; grid-auto-rows: minmax(96px, 1fr); gap: 10px; }
+  .tiles.donate { flex: 1 1 0; }
+  .tiles.links { flex: 2 1 0; }
   .tile {
-    position: relative; display: flex; align-items: center; gap: 10px; padding: 12px; min-height: 74px;
-    border-radius: 20px; color: #fff; overflow: hidden; isolation: isolate;
-    transition: transform .16s ease, filter .16s ease; -webkit-tap-highlight-color: transparent;
+    display: flex; flex-direction: column; justify-content: space-between; align-items: flex-start; gap: 10px;
+    padding: var(--pad); border-radius: 20px; color: #fff; -webkit-tap-highlight-color: transparent;
+    transition: transform .16s ease, filter .16s ease;
   }
   .tile:active { transform: scale(.97); }
   .tile:focus-visible { outline: 3px solid var(--glow); outline-offset: 3px; }
   @media (hover: hover) { .tile:hover { filter: brightness(1.08); } }
-  .tile .badge { width: 40px; height: 40px; border-radius: 12px; display: grid; place-items: center; flex: none; background: rgba(255, 255, 255, .22); }
-  .tile .badge .ms { font-size: 23px; color: #fff; }
+  .tile .badge { width: 44px; height: 44px; border-radius: 13px; display: grid; place-items: center; flex: none; background: rgba(255, 255, 255, .22); }
+  .tile .badge .ms { font-size: 25px; color: #fff; }
   .tile .badge.white { background: #fff; }
-  .tile .badge.white img { width: 30px; height: 30px; display: block; }
-  .tile .badge.white svg { width: 24px; height: 24px; display: block; }
+  .tile .badge.white img { width: 32px; height: 32px; display: block; }
+  .tile .badge.white svg { width: 26px; height: 26px; display: block; }
   .tile .tx { min-width: 0; }
-  .tile b { display: block; font-size: 16.5px; font-weight: 700; line-height: 1.15; letter-spacing: -.01em; }
-  .tile .sub { display: block; font-size: 12.5px; line-height: 1.3; color: rgba(255, 255, 255, .86); margin-top: 2px; }
+  .tile b { display: block; font-size: 17px; font-weight: 700; line-height: 1.15; letter-spacing: -.01em; }
+  .tile .sub { display: block; font-size: 13px; line-height: 1.3; color: rgba(255, 255, 255, .86); margin-top: 2px; }
 
-  /* Владелец 15.11: заливка ровная, одним цветом — без бликов и переходов. */
-  .tile.tribute { background: var(--tribute-solid); box-shadow: 0 12px 28px -14px rgba(51, 153, 255, .85); }
-  .tile.boosty  { background: var(--boosty-solid); box-shadow: 0 12px 28px -14px rgba(241, 95, 44, .85); }
-  .tile.community { background: var(--teal-solid); box-shadow: 0 12px 28px -14px rgba(25, 211, 164, .75); }
-  .tile.channel { background: var(--tg-solid); box-shadow: 0 12px 28px -14px rgba(42, 171, 238, .8); }
-  .tile.bot { background: var(--violet-solid); box-shadow: 0 12px 28px -14px rgba(155, 107, 255, .8); }
-  .tile.site { background: var(--site-solid); box-shadow: inset 0 0 0 1.5px rgba(0, 229, 255, .55), 0 12px 28px -16px rgba(0, 229, 255, .6); }
+  .tile.tribute { background: var(--tribute-solid); }
+  .tile.boosty { background: var(--boosty-solid); }
+  .tile.community { background: var(--teal-solid); }
+  .tile.channel { background: var(--tg-solid); }
+  .tile.bot { background: var(--violet-solid); }
+  .tile.site { background: var(--site-solid); }
 
+  /* Строка разработчика: высота = значок + 2 отступа, поэтому слева, сверху и снизу отступ одинаковый. */
   .dev {
-    margin-top: 10px; display: flex; align-items: center; gap: 12px; padding: 11px 14px; border-radius: 20px;
-    background: rgba(255, 255, 255, .08); box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .13);
-    color: var(--snow); transition: transform .16s ease, background .16s ease;
+    margin-top: 10px; display: flex; align-items: center; gap: 12px; padding: 14px; border-radius: 20px;
+    background: rgba(255, 255, 255, .08); color: var(--snow); transition: transform .16s ease, background .16s ease;
   }
   .dev:active { transform: scale(.98); }
   .dev:focus-visible { outline: 3px solid var(--glow); outline-offset: 3px; }
   @media (hover: hover) { .dev:hover { background: rgba(255, 255, 255, .12); } }
-  .dev .badge { width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; flex: none;
-    background: linear-gradient(160deg, var(--glow), var(--tribute-deep)); }
-  .dev .badge .ms { font-size: 23px; color: #fff; }
-  .dev b { display: block; font-size: 16px; font-weight: 600; }
-  .dev .sub { display: block; font-size: 13px; color: var(--mist); margin-top: 1px; }
+  .dev .badge { width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; flex: none; background: var(--tg-solid); }
+  .dev .badge .ms { font-size: 25px; color: #fff; }
+  .dev b { display: block; font-size: 16px; font-weight: 600; line-height: 1.2; }
+  .dev .sub { display: block; font-size: 13px; line-height: 1.3; color: var(--mist); margin-top: 1px; }
   .dev .go { margin-left: auto; font-size: 22px; color: var(--mist); }
 
-  .lk-more { margin-top: 22px; text-align: center; color: var(--mist); font-size: 13.5px; line-height: 1.6; }
+  .lk-more { margin: 18px 0 0; text-align: center; color: var(--mist); font-size: 13.5px; line-height: 1.6; }
   .lk-more a { color: var(--snow); border-bottom: 1px solid rgba(243, 247, 255, .3); }
-  .lk-langs { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-top: 16px; }
-  .lk-langs a { padding: 6px 11px; border-radius: 999px; color: var(--mist); font-size: 13px; background: rgba(255, 255, 255, .06); }
-  .lk-langs a[aria-current] { color: var(--snow); background: rgba(255, 255, 255, .16); }
-  .lk-langs a:focus-visible, .lk-more a:focus-visible { outline: 2px solid var(--glow); outline-offset: 2px; }
+  .lk-more a:focus-visible { outline: 2px solid var(--glow); outline-offset: 2px; }
 
-  @media (max-width: 340px) { .tile { flex-direction: column; align-items: flex-start; } }
+  /* Невысокие экраны (iPhone SE): плотнее, чтобы всё влезло без прокрутки; отступы по-прежнему равные. */
+  @media (max-height: 700px) {
+    .card-page { --pad: 12px; }
+    .lk-h { margin: 12px 2px 6px; }
+    .tiles { grid-auto-rows: minmax(84px, 1fr); gap: 8px; }
+    .tile { gap: 6px; }
+    .tile .badge { width: 38px; height: 38px; border-radius: 11px; }
+    .tile .badge .ms { font-size: 22px; }
+    .tile .badge.white img { width: 28px; height: 28px; }
+    .tile .badge.white svg { width: 22px; height: 22px; }
+    .tile b { font-size: 16px; }
+    .tile .sub { font-size: 12.5px; }
+    .dev { margin-top: 8px; padding: 12px; }
+    .dev .badge { width: 40px; height: 40px; }
+    .lk-more { margin-top: 12px; font-size: 13px; line-height: 1.5; }
+  }
   @media (prefers-reduced-motion: reduce) { .tile, .dev { transition: none; } }
 </style>
 <div class="lk">
@@ -110,9 +135,13 @@
 <h1>Deepal Tools</h1>
 <p>Приложения для Deepal S07</p>
 </div>
+<details class="lk-lang">
+<summary aria-label="Язык"><span aria-hidden="true" class="ms">translate</span><span class="lang-cur">RU</span></summary>
+<nav aria-label="Language" class="lang-menu"><a aria-current="true" href="https://deepaltools.com/links/" hreflang="ru" lang="ru">Русский</a><a href="https://deepaltools.com/en/links/" hreflang="en" lang="en">English</a><a href="https://deepaltools.com/uz/links/" hreflang="uz" lang="uz">Oʻzbekcha</a><a href="https://deepaltools.com/kk/links/" hreflang="kk" lang="kk">Қазақша</a><a href="https://deepaltools.com/ky/links/" hreflang="ky" lang="ky">Кыргызча</a><a href="https://deepaltools.com/az/links/" hreflang="az" lang="az">Azərbaycanca</a><a href="https://deepaltools.com/hy/links/" hreflang="hy" lang="hy">Հայերեն</a></nav>
+</details>
 </header>
 <h2 class="lk-h">Поддержать проект</h2>
-<div class="tiles">
+<div class="tiles donate">
 <a class="tile tribute" href="https://t.me/tribute/app?startapp=dPI5">
 <span class="badge white"><img alt="" height="30" src="/assets/links/tribute.png?v=4886d30d17" width="30"/></span>
 <span class="tx"><b>Tribute</b><span class="sub">В Telegram</span></span>
@@ -123,7 +152,7 @@
 </a>
 </div>
 <h2 class="lk-h">Telegram и сайт</h2>
-<div class="tiles">
+<div class="tiles links">
 <a class="tile community" href="https://t.me/deepal_tools_community">
 <span class="badge"><span aria-hidden="true" class="ms">forum</span></span>
 <span class="tx"><b>Сообщество</b><span class="sub">Вопросы и помощь</span></span>
@@ -147,8 +176,37 @@
 <span aria-hidden="true" class="ms go">chevron_right</span>
 </a>
 <p class="lk-more">Tribute не открывается в Telegram? <a href="https://web.tribute.tg/d/PI5">Открыть в браузере</a><br/>Спасибо, что вы с нами.</p>
-<nav aria-label="Language" class="lang-menu lk-langs"><a aria-current="true" href="https://deepaltools.com/links/" hreflang="ru" lang="ru">Русский</a><a href="https://deepaltools.com/en/links/" hreflang="en" lang="en">English</a><a href="https://deepaltools.com/uz/links/" hreflang="uz" lang="uz">Oʻzbekcha</a><a href="https://deepaltools.com/kk/links/" hreflang="kk" lang="kk">Қазақша</a><a href="https://deepaltools.com/ky/links/" hreflang="ky" lang="ky">Кыргызча</a><a href="https://deepaltools.com/az/links/" hreflang="az" lang="az">Azərbaycanca</a><a href="https://deepaltools.com/hy/links/" hreflang="hy" lang="hy">Հայերեն</a></nav>
 </div>
+<script>
+  (function () {
+    var d = document.querySelector(".lk-lang");
+    if (!d) return;
+    // Language menu: closes on outside tap and Esc; the chosen language is remembered and wins over the country.
+    document.addEventListener("click", function (e) { if (d.open && !d.contains(e.target)) d.open = false; });
+    document.addEventListener("keydown", function (e) { if (e.key === "Escape") d.open = false; });
+    d.querySelectorAll(".lang-menu a[hreflang]").forEach(function (a) {
+      a.addEventListener("click", function () { try { localStorage.setItem("dt_lang", a.getAttribute("hreflang")); } catch (e) {} });
+    });
+    function go(code) {
+      var a = d.querySelector('.lang-menu a[hreflang="' + code + '"]');
+      if (a && code !== document.documentElement.lang) location.replace(a.getAttribute("href"));
+    }
+    var saved = null;
+    try { saved = localStorage.getItem("dt_lang"); } catch (e) {}
+    if (saved) { go(saved); return; }
+    // First visit by QR lands on the default (ru) page: pick the language by country (server, by IP), else by phone language.
+    if (document.documentElement.lang !== "ru") return;
+    var ours = ["ru", "en", "uz", "kk", "ky", "az", "hy"];
+    function byPhone() {
+      var l = ((navigator.languages && navigator.languages[0]) || navigator.language || "").slice(0, 2).toLowerCase();
+      if (ours.indexOf(l) >= 0) go(l);
+    }
+    fetch("https://deepaltools.com/api/v1/lang", { cache: "no-store" })
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (j) { if (j && j.lang) go(j.lang); else byPhone(); })
+      .catch(byPhone);
+  })();
+</script>
 </main>
 </body>
 </html>
